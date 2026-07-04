@@ -38,4 +38,14 @@ from .tools import llm
 
 def respond(state: ClinicalIQState) -> dict:
     """Call the LLM and return the agent's reply."""
-    raise NotImplementedError("TODO 4: implement respond() in clinicaliq/nodes.py")
+    messages = [
+        SystemMessage(content=SYSTEM_PROMPT),
+        HumanMessage(content=state["customer_message"]),
+        ]
+    try:
+        result = llm.invoke(messages)
+        return {"response": result.content}
+    except Exception as e:
+        print(f"[ClinicalIQ] Error: {e}")
+        return {"response": "Sorry, I encountered an error while processing your request."}
+    

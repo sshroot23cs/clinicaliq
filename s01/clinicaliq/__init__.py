@@ -6,8 +6,11 @@ This file runs automatically when Python imports the clinicaliq package.
 Use it to set up the environment before any other module loads.
 """
 import os
+from dotenv import load_dotenv
 
 os.environ.setdefault("HF_HUB_VERBOSITY", "error")
+
+load_dotenv()  # load .env file into os.environ so other modules can access the keys
 
 # ---------------------------------------------------------------------------
 # TODO 1 of 5 -- Environment setup
