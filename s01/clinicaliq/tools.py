@@ -11,7 +11,7 @@ import os
 
 from langchain_groq import ChatGroq
 
-from .config import MAX_TOKENS, MODEL_NAME, TEMPERATURE
+from .config import MAX_TOKENS, MODEL_NAME, TEMPERATURE, CLASSIFICATION_MODEL_NAME, CLASSIFICATION_TEMPERATURE, CLASSIFICATION_MAX_TOKENS
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
@@ -28,3 +28,37 @@ llm = ChatGroq(
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,
 )
+
+classifier_llm = ChatGroq(
+    api_key=GROQ_API_KEY,
+    model=CLASSIFICATION_MODEL_NAME,
+    temperature=CLASSIFICATION_TEMPERATURE,
+    max_tokens=CLASSIFICATION_MAX_TOKENS,
+)
+
+
+_BOX_WIDTH = 100
+_BOX_INNER_WIDTH = _BOX_WIDTH - 4  # "X " prefix + " X" suffix
+_box_lines = [
+    "* ClinicalIQ Agent",
+    "",
+    f"Intent Classification Model: {classifier_llm.model}, with temperature {classifier_llm.temperature}",
+    f"Responses Generation Model: {llm.model}, with temperature {llm.temperature}",
+    "",
+    "Built By: Sushrut Hole",
+]
+
+
+def _print_box(lines, inner_width):
+    # Plain ASCII only: this runs at import time, and some hosts (e.g. langgraph
+    # dev's worker threads on Windows) redirect stdout through a non-UTF-8 codec,
+    # which raises UnicodeEncodeError on box-drawing characters and aborts the import.
+    print("+" + "-" * (inner_width + 2) + "+")
+    for line in lines:
+        if len(line) > inner_width:
+            line = line[: inner_width - 3] + "..."
+        print(f"| {line:<{inner_width}} |")
+    print("+" + "-" * (inner_width + 2) + "+")
+
+
+_print_box(_box_lines, _BOX_INNER_WIDTH)
