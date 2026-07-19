@@ -40,7 +40,7 @@ classifier_llm = ChatGroq(
 _BOX_WIDTH = 100
 _BOX_INNER_WIDTH = _BOX_WIDTH - 4  # "X " prefix + " X" suffix
 _box_lines = [
-    "* WealthDesk Agent",
+    "* ClinicalIQ Agent",
     "",
     f"Intent Classification Model: {classifier_llm.model}, with temperature {classifier_llm.temperature}",
     f"Responses Generation Model: {llm.model}, with temperature {llm.temperature}",
