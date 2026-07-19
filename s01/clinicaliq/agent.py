@@ -38,8 +38,8 @@ def build_graph(checkpointer=None) -> StateGraph:
         builder.add_edge("retrieve_docs", "respond")
         builder.add_edge("respond", END)
         builder.add_edge("decline", END)
-        if checkpointer is None:
-            checkpointer = MemorySaver()
+        # if checkpointer is None:
+        #     checkpointer = MemorySaver()
         return builder.compile(checkpointer=checkpointer)  # no checkpointing for now
     except Exception as e:
         print(f"[ClinicalIQ] Error building graph: {e}")
